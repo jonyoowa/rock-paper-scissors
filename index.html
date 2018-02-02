@@ -1,0 +1,103 @@
+<html>
+  <head>
+    <title>Rock, Paper, Scissors</title>
+  </head>
+  <body>
+  	<script>
+  		// Alert the player on how to start the game 
+  		alert("To begin, enter game() into your browser's console.");
+    	console.info("To begin, enter game() into the console.");
+
+    	// Controls the game rules
+    	function game() {
+    		var playerWins = 0;
+      		var computerWins = 0;
+      		var ties = 0;
+
+      		var roundNumber = 1;
+      		const totalRounds = 5
+
+      		// Play a round of RPS until the total amount of rounds is reached
+      		for (roundNumber; roundNumber <= totalRounds; ++roundNumber) {
+      			let result = round(); 
+
+	      		if (result.includes("win")) {
+	      			playerWins++;
+		    	} else if (result.includes("lose")) {
+		    		computerWins++;
+		    	} else if (result.includes("Tie")) {
+		    		ties++; 
+		    	} else {
+		    		console.error("Error. Something went wrong");
+		    	}
+		    	// Display result of the round
+		    	console.log(result);
+      		}
+      		// Display win/loss/tie record
+      		console.log(`Player has ${playerWins} wins and computer has ${computerWins} wins. There are ${ties} ties.`);
+
+      		// Display winner of game 
+      		if (playerWins > computerWins) {
+      			console.log("Player wins the game!");
+      		} else if (computerWins > playerWins) {
+      			console.log("Computer wins the game!");
+      		} else { 
+      			console.log("It's a tie game!");
+      		}
+
+	    	function round() { 
+	    		// Round calculations
+		    	const player = playerChoice();
+		    	const computer = computerPlay(); 
+		    	let result = playRound(player, computer);
+		    	return result; 
+
+		    	// Round functions 
+		    	function playRound(playerSelection, computerSelection) {
+		    		if (playerSelection === computerSelection) {
+		    			return `Tie! You both chose ${playerSelection}!`;
+		    		} else if (playerSelection === "rock") {
+		    			if (computerSelection === "paper") { return loseMessage(); }
+		    			else { return winMessage(); }
+		    		} else if (playerSelection === "paper") {
+		       			if (computerSelection === "scissors") { return loseMessage(); }
+		    			else { return winMessage(); }
+		    		} else { // playerSelection === "scissors"
+		    			if (computerSelection === "rock") { return loseMessage(); }
+		    			else { return winMessage(); }
+		    		}
+
+			    	function loseMessage() {
+			    		return `You lose, ${computerSelection} beats ${playerSelection}!`
+			    	}
+
+			    	function winMessage() {
+			    		return `You win, ${playerSelection} beats ${computerSelection}!`
+			    	}
+		    	}
+
+		    	function playerChoice() {
+			    	let choice = prompt("Rock, paper, or scissors?");
+					
+					if (typeof choice !== "string" || 
+						(choice.toLowerCase() !== "rock" && choice.toLowerCase() !== "paper" && choice.toLowerCase() !== "scissors")) {
+			        	console.error("Error. Please make a valid choice");
+			      	} else {
+			      		return choice.toLowerCase();
+			      	}
+			    }
+
+		  		function computerPlay() {
+					let choice = Math.floor(Math.random() * 3);
+
+					if (choice === 0) { return "rock"; }
+					else if (choice === 1) { return "paper"; }
+					else { return "scissors"; }
+
+		  			return choice;
+		  		}
+	  		}
+  		}
+  	</script>
+  </body>
+</html>
