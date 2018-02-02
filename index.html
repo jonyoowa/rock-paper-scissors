@@ -21,17 +21,16 @@
       		for (roundNumber; roundNumber <= totalRounds; ++roundNumber) {
       			let result = round(); 
 
-	      		if (result.includes("win")) {
+				if (result === 1) {
 	      			playerWins++;
-		    	} else if (result.includes("lose")) {
+		    	} else if (result === -1) {
 		    		computerWins++;
-		    	} else if (result.includes("Tie")) {
+		    	} else if (result === 0) {
 		    		ties++; 
 		    	} else {
-		    		console.error("Error. Something went wrong");
+		    		// Player input invalid choice. Retry the round 
+		    		--roundNumber;
 		    	}
-		    	// Display result of the round
-		    	console.log(result);
       		}
       		// Display win/loss/tie record
       		console.log(`Player has ${playerWins} wins and computer has ${computerWins} wins. There are ${ties} ties.`);
@@ -55,25 +54,24 @@
 		    	// Round functions 
 		    	function playRound(playerSelection, computerSelection) {
 		    		if (playerSelection === computerSelection) {
-		    			return `Tie! You both chose ${playerSelection}!`;
-		    		} else if (playerSelection === "rock") {
-		    			if (computerSelection === "paper") { return loseMessage(); }
-		    			else { return winMessage(); }
-		    		} else if (playerSelection === "paper") {
-		       			if (computerSelection === "scissors") { return loseMessage(); }
-		    			else { return winMessage(); }
-		    		} else { // playerSelection === "scissors"
-		    			if (computerSelection === "rock") { return loseMessage(); }
-		    			else { return winMessage(); }
+		    			console.log(`Tie! You both chose ${playerSelection}!`);
+		    			return 0;
+
+		    		} else if ((playerSelection === "rock" && computerSelection === "scissors")
+		    			|| (playerSelection === "scissors" && computerSelection === "paper")
+		    			||(playerSelection === "paper" && computerSelection === "rock")) {
+		    			console.log(`You won, ${playerSelection} beats ${computerSelection}`);
+		    			return 1;
+
+		    		} else if ((computerSelection === "rock" && playerSelection === "scissors")
+		    			|| (computerSelection === "scissors" && playerSelection === "paper")
+		    			||(computerSelection === "paper" && playerSelection === "rock")) {
+		    			console.log(`You lost, ${computerSelection} beats ${playerSelection}`);
+		    			return -1; 
+
+		    		} else {
+		    			console.log("Something went wrong... try again")
 		    		}
-
-			    	function loseMessage() {
-			    		return `You lose, ${computerSelection} beats ${playerSelection}!`
-			    	}
-
-			    	function winMessage() {
-			    		return `You win, ${playerSelection} beats ${computerSelection}!`
-			    	}
 		    	}
 
 		    	function playerChoice() {
